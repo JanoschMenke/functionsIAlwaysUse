@@ -32,11 +32,11 @@ class compute_ecfp():
 
 
 
-def saveFigure(path,**args):
+def saveFigure(path,**kwargs):
   """quickly save plots in the most important file formats"""
-  plt.savefig(f"{path}.png",format = "png", **args)
-  plt.savefig(f"{path}.pdf",format = "pdf", **args)
-  plt.savefig(f"{path}.svg",format = "svg", **args)  
+  plt.savefig(f"{path}.png",format = "png", **kwargs)
+  plt.savefig(f"{path}.pdf",format = "pdf", **kwargs)
+  plt.savefig(f"{path}.svg",format = "svg", **kwargs)  
  
 
 def canonicalizeSmiles(mol, stereoInformation = False):
