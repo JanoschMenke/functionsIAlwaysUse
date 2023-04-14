@@ -1,10 +1,27 @@
 from matplotlib import pyplot as plt
+from matplotlib import rc
+
 from rdkit.Chem import AllChem as Chem
 from tqdm import tqdm 
 import pandas as pd
 import multiprocessing as mp
 from rdkit.Chem import Descriptors
 import numpy as np
+
+
+def setPlotSettings():
+    myPalette = [
+        "#e4897b",
+        "#5aa8c8",
+        "#82C163",
+        "#f4bb4d",
+        "#ffffff00",
+        "#757575ff",
+    ]
+    sns.set_palette(sns.color_palette(myPalette))
+    plt.rc("axes.spines", top=False, right=False)
+    rc("font", **{"family": "monospace"})
+    rc("text", usetex=False)
 
 class compute_ecfp():
     """
