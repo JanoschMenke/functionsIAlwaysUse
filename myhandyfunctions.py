@@ -29,29 +29,36 @@ def setPlotSettings():
     rc("text", usetex=False)
     return RED, BLUE, GREEN, YELLOW
 
-class compute_ecfp():
+class compute_ecfp:
     """
     Quick and Dirty class, used to calculate the ECFP on multiple cores.
     """
-    
-    def __init__(self, bitSize=2048, radius=2):        
+
+    def __init__(self, bitSize=2048, radius=2):
         self.bitSize = bitSize
         self.radius = radius
-        
-    def get_single_fp(self,smile):
+
+    def get_single_fp(self, smile):
         """Computes a single fingerprint"""
+
         try:
-            fp = Chem.GetMorganFingerprintAsBitVect(Chem.MolFromSmiles(smile),self.radius,nBits=self.bitSize)
-            return np.array(fp, dtype = np.int8)
+            fp = Chem.GetMorganFingerprintAsBitVect(
+                Chem.MolFromSmiles(smile), self.radius, nBits=self.bitSize
+            )
+            return np.array(fp, dtype=np.int8)
         except:
-            return np.zeros(self.bitSize, np.int8) #zero vector is return of invalid smiles
-    def get_fingerprints(self,smiles_list,ncores=1):
+            return np.zeros(
+                self.bitSize, np.int8
+            )  # zero vector is return of invalid smiles
+
+    def get_fingerprints(self, smiles_list, ncores=1):
         """Computes the fingerprint  for a list of smiles"""
-        pool = mp.Pool(processes=ncores)
-        fingerprints = np.stack(pool.map(self.get_single_fp,smiles_list))
+        pool = mp.get_context("fork").Pool(processes=ncores)
+        fingerprints = np.stack(pool.map(self.get_single_fp, smiles_list))
         pool.close()
         pool.join()
         return fingerprints
+
 
 
 
