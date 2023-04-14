@@ -10,11 +10,16 @@ import numpy as np
 
 
 def setPlotSettings():
+    RED = "#e4897b"
+    BLUE = "#5aa8c8"
+    GREEN = "#82C163"
+    YELLOW = "#f4bb4d"
+
     myPalette = [
-        "#e4897b",
-        "#5aa8c8",
-        "#82C163",
-        "#f4bb4d",
+        RED,
+        BLUE,
+        GREEN,
+        YELLOW,
         "#ffffff00",
         "#757575ff",
     ]
@@ -22,6 +27,7 @@ def setPlotSettings():
     plt.rc("axes.spines", top=False, right=False)
     rc("font", **{"family": "monospace"})
     rc("text", usetex=False)
+    return RED, BLUE, GREEN, YELLOW
 
 class compute_ecfp():
     """
