@@ -61,18 +61,6 @@ class compute_ecfp:
         return fingerprints
 
 
-def sdf2smiles(path, ncores):
-    "multithreaded sdf reader"
-    smiles_ll = list()
-    if path.split(".")[-1] == "gz":
-        with gzip.open(path) as file:
-            for mol in tqdm(Chem.MultithreadedSDMolSupplier(file,numWriterThreads=ncores)):
-                smiles_ll.append(Chem.MolToSmiles(mol, isomericSmiles=True))
-    else:
-        for mol in tqdm(Chem.MultithreadedSDMolSupplier(file,numWriterThreads=ncores)):
-            smiles_ll.append(Chem.MolToSmiles(mol, isomericSmiles=True))
-        
-    return smiles_ll
 
 def saveFigure(path,**kwargs):
   """quickly save plots in the most important file formats"""
