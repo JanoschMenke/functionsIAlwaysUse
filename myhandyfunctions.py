@@ -7,6 +7,7 @@ import pandas as pd
 import multiprocessing as mp
 from rdkit.Chem import Descriptors
 import numpy as np
+import gzip
 
 
 def setPlotSettings():
@@ -54,13 +55,24 @@ class compute_ecfp:
     def get_fingerprints(self, smiles_list, ncores=1):
         """Computes the fingerprint  for a list of smiles"""
         pool = mp.get_context("fork").Pool(processes=ncores)
-        fingerprints = np.stack(pool.map(self.get_single_fp, smiles_list))
+        fingerprints = np.stack(pool.map(self.get_single_fp, smiles_list)) 
         pool.close()
         pool.join()
         return fingerprints
 
 
-
+def sdf2smiles(path, ncores):
+    "multithreaded sdf reader"
+    smiles_ll = list()
+    if path.split(".")[-1] == "gz":
+        with gzip.open(path) as file:
+            for mol in tqdm(Chem.MultithreadedSDMolSupplier(file,numWriterThreads=ncores)):
+                smiles_ll.append(Chem.MolToSmiles(mol, isomericSmiles=True))
+    else:
+        for mol in tqdm(Chem.MultithreadedSDMolSupplier(file,numWriterThreads=ncores)):
+            smiles_ll.append(Chem.MolToSmiles(mol, isomericSmiles=True))
+        
+    return smiles_ll
 
 def saveFigure(path,**kwargs):
   """quickly save plots in the most important file formats"""
