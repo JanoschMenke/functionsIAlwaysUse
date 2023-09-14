@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 from matplotlib import rc
 
 from rdkit.Chem import AllChem as Chem
+from rdkit.Chem import Draw
 from tqdm import tqdm 
 import pandas as pd
 import multiprocessing as mp
@@ -71,3 +72,11 @@ def saveFigure(path,**kwargs):
 
 def canonicalizeSmiles(mol, stereoInformation = False):
   return Chem.MolToSmiles(Chem.MolFromSmiles(mol), isomericSmiles=stereoInformation)
+
+def draw_molecules(mols, **kwargs):
+    if type(mols[0]) == Chem.rdchem.Mol:
+        img = Draw.MolsToGridImage(mols, **kwargs)
+        display(img)
+    else:
+        img = Draw.MolsToGridImage([Chem.MolFromSmiles(smi) for smi in mols], **kwargs)
+        display(img)
